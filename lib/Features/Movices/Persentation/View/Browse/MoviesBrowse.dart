@@ -1,4 +1,3 @@
-/*
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/Core/ServiceLocater/Movies/BrowseServiceLocater.dart';
@@ -36,12 +35,7 @@ class _MoviesBrowseState extends State<MoviesBrowse> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create:
-          (context) =>
-              BrowseServicelocater.moviecubit..getMoviesByCategorieUsecase(
-                CategoriesList[selectedCategoryId].Name,
-              ),
+    return BlocProvider.value(
       value: movieCubit,
       child: BlocBuilder<BrowseTabCubit, BrowseTabState>(
         buildWhen:
@@ -98,7 +92,10 @@ class _MoviesBrowseState extends State<MoviesBrowse> {
                     ),
                     const SizedBox(height: 20),
 
-                    buildMoviesList(state.sources, state.sources.length),
+                    buildMoviesList(
+                      state: state.sources,
+                      lenght: state.sources.length,
+                    ),
                   ],
                 ),
               ),
@@ -114,4 +111,3 @@ class _MoviesBrowseState extends State<MoviesBrowse> {
     );
   }
 }
-*/

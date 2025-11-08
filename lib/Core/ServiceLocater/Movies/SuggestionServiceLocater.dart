@@ -1,0 +1,28 @@
+// class ServiceLocator {
+//   static ArticlesDataSource articlesDataSource = ApisDataSource();
+//   static ArticlesRepository articlesRepository = ArticlesRepository(
+//     articlesDataSource: articlesDataSource,
+//   );
+//   // static ArticlesProvider articlesProvider = ArticlesProvider(
+//   //   articlesRepository: articlesRepository,
+//   // );
+//   static ArticlesCubit articlesCubit = ArticlesCubit(articlesRepository);
+// }
+import 'package:movies/Features/Movices/Data/Data_Sources/MoviesAPI.dart';
+import 'package:movies/Features/Movices/Data/Data_Sources/MoviesDataSource.dart';
+import 'package:movies/Features/Movices/Data/Repository_impl/RepositoryImp.dart';
+import 'package:movies/Features/Movices/Domain/Repository/MoviesRepository.dart';
+import 'package:movies/Features/Movices/Domain/user%20Cases/GetMoviesBySuggestions.dart';
+import 'package:movies/Features/Movices/Persentation/ViewModel/SuggestionTab/SuggestionTabCubit.dart';
+
+class Suggestionservicelocater {
+  static Moviesdatasource moviesdatasource = Moviesapi();
+  static MoviesRepository moviesRepository = MoviesRepositoryImp(
+    MovieDataSource: moviesdatasource,
+  );
+  static GetMoviesBySuggestionUsecase moviesBySuggestionUsecase =
+      GetMoviesBySuggestionUsecase(MoviesRepository: moviesRepository);
+  static SuggestionTabCubit moviecubit = SuggestionTabCubit(
+    moviesBySuggestionUsecase,
+  );
+}

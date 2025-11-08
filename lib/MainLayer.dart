@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies/Core/Assets/AppColors.dart';
+import 'package:movies/Features/Movices/Persentation/View/Browse/MoviesBrowse.dart';
 
 class Mainlayer extends StatefulWidget {
   const Mainlayer({super.key});
@@ -13,7 +14,7 @@ class _MainlayerState extends State<Mainlayer> {
   List<Widget> page = [
     Container(color: AppColors.Black),
     Container(color: AppColors.Red),
-    Container(color: AppColors.LightGrey),
+    MoviesBrowse(),
     Container(color: AppColors.White),
   ];
   int currantIndent = 0;

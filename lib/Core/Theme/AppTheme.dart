@@ -21,5 +21,17 @@ class AppTheme {
         ),
       ),
     ),
+    filledButtonTheme: FilledButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.all(AppColors.Red),
+        textStyle: WidgetStateProperty.all(
+          TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    ),
   );
 }

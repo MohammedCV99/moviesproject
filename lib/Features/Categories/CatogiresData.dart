@@ -1,32 +1,33 @@
-Map<int, String> CategoriesList = {
-  1: "Action",
-  2: "Adventure",
-  3: "Animation",
-  4: "Biography",
-  5: "Comedy",
-  6: "Crime",
-  7: "Documentary",
-  8: "Drama",
-  9: "Family",
-  10: "Fantasy",
-  11: "Film-Noir",
-  12: "Game-Show",
-  13: "History",
-  14: "Horror",
-  15: "Music",
-  16: "Musical",
-  17: "Mystery",
-  18: "News",
-  19: "Reality-TV",
-  20: "Romance",
-  21: "Sci-Fi",
-  22: "Sport",
-  23: "Talk-Show",
-  24: "Thriller",
-  25: "War",
-  26: "Western",
-};
-
-String? GetCategorieName(int id) {
-  return CategoriesList[id];
+class Categories {
+  int id;
+  String Name;
+  Categories(this.id, this.Name);
 }
+
+List<Categories> CategoriesList = [
+  Categories(0, "Action"),
+  Categories(1, "Adventure"),
+  Categories(2, "Animation"),
+  Categories(3, "Comedy"),
+  Categories(4, "Crime"),
+  Categories(5, "Documentary"),
+  Categories(6, "Drama"),
+  Categories(7, "Family"),
+  Categories(8, "Fantasy"),
+  Categories(9, "Film-Noir"),
+  Categories(10, "Game-Show"),
+  Categories(11, "History"),
+  Categories(12, "Horror"),
+  Categories(13, "Music"),
+  Categories(14, "Musical"),
+  Categories(15, "Mystery"),
+  Categories(16, "News"),
+  Categories(17, "Reality-TV"),
+  Categories(18, "Romance"),
+  Categories(19, "Sci-Fi"),
+  Categories(20, "Sport"),
+  Categories(21, "Talk-Show"),
+  Categories(22, "Thriller"),
+  Categories(23, "War"),
+  Categories(24, "Western"),
+];

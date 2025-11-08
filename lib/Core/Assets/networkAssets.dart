@@ -21,16 +21,16 @@ class AppNetwork {
     return "list_movies.json?limit=30&page=${pageID}";
   }
 
-  static String MovieDetails(String movie_id) {
-    return "movie_details.json?movie_id=${movie_id}&with_images=true&with_cast=true";
+  static String MovieDetails(int movie_id) {
+    return "https://yts.mx/api/v2/movie_details.json?movie_id=${movie_id}&with_images=true&with_cast=true";
   }
 
   static String MoviesByCategory(String genere) {
-    return "list_movies.json?genre=${genere}";
+    return "https://yts.mx/api/v2/list_movies.json?genre=${genere}&order_by=desc&sort_by=year";
   }
 
   static String MovieSuggestions(int Movie_ID) {
-    return "movie_suggestions.json?movie_id=${Movie_ID}";
+    return "https://yts.mx/api/v2/movie_suggestions.json?movie_id=${Movie_ID}";
   }
 
   static String MovieSearch(String MovieName) {
