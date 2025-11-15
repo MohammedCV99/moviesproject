@@ -1,5 +1,5 @@
 
-import 'package:movies/Features/Movies/Data/Models/MoviesModel.dart';
+import 'package:movies/Features/Movices/Data/Models/MoviesModel.dart';
 
 abstract class SearchTabState {}
 

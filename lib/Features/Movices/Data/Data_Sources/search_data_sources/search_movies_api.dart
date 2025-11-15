@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:movies/Core/Assets/networkAssets.dart';
-import 'package:movies/Features/Movies/Data/Models/MoviesModel.dart';
+import 'package:movies/Features/Movices/Data/Models/MoviesModel.dart';
 
 class SearchMoviesApi {
 final Dio dio;
@@ -8,13 +8,13 @@ final Dio dio;
 SearchMoviesApi():dio=Dio();
 
 
-Future<MoviesModel> searchMovies(String movieName) async {
+Future<Moviesmodel> searchMovies(String movieName) async {
     Dio dio = Dio();
     try {
       final response = await dio.get(AppNetwork.MovieSearch(movieName));
       if (response.statusCode == 200 ||response.statusCode==201 ) {
         
-        return MoviesModel.fromJson(response.data);
+        return Moviesmodel.fromJson(response.data);
       } else {
         throw Exception('Failed with status: ${response.statusCode}');
       }
