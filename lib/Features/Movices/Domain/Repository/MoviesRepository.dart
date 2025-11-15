@@ -5,4 +5,5 @@ abstract class MoviesRepository {
   Future<List<Movie>> GetMoviesByCategories(String MoviesListName);
   Future<List<Movie>> GetMoviesBySuggestion(int MovieID);
   Future<MovieDetials> GetMovieDetials(int MovieID);
+  Future<List<Movie>> GetRelesedMovies();
 }

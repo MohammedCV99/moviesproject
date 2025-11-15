@@ -1,12 +1,12 @@
 class Appconsts {
   //OnBoarding Page 1
-  static String OnBoarding1Title = "Find Your Next Favorite Movie Here";
+  static String OnBoarding1Title = "Find Your Next\nFavorite Movie Here";
   static String OnBoarding1SubTitle =
-      "Get access to a huge library of movies to suit all tastes. You will surely like it.";
+      "Get access to a huge library of movies\nto suit all tastes. You will surely like it.";
   //OnBoarding Page 2
   static String OnBoarding2Title = "Discover Movies";
   static String OnBoarding2SubTitle =
-      "Explore a vast collection of movies in all qualities and genres. Find your next favorite film with ease.";
+      "Explore a vast collection of movies in all\nqualities and genres. Find your next\nfavorite film with ease.";
   //OnBoarding Page 3
   static String OnBoarding3Title = "Explore All Genres";
   static String OnBoarding3SubTitle =

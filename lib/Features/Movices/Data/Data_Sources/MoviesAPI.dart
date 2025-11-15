@@ -60,4 +60,22 @@ class Moviesapi extends Moviesdatasource {
       throw Exception('Unexpected error: $e');
     }
   }
+
+  @override
+  Future<Moviesmodel> GetRelesedMovies() async {
+    // TODO: implement GetRelesedMovies
+    Dio dio = Dio();
+    try {
+      final response = await dio.get(AppNetwork.ListNewMoviesByYear);
+      if (response.statusCode == 200) {
+        return Moviesmodel.fromJson(response.data);
+      } else {
+        throw Exception('Failed with status: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw Exception('Network error: ${e.message}');
+    } catch (e) {
+      throw Exception('Unexpected error: $e');
+    }
+  }
 }

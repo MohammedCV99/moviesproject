@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/Features/Movices/Data/Models/MoviesModel.dart';
-import 'package:movies/Features/Movices/Domain/user%20Cases/GetMoviesBySuggestions.dart';
+import 'package:movies/Features/Movices/Domain/use%20Cases/GetMoviesBySuggestions.dart';
 import 'package:movies/Features/Movices/Persentation/ViewModel/SuggestionTab/SuggestionTabState.dart';
 
 class SuggestionTabCubit extends Cubit<SuggestionTabState> {

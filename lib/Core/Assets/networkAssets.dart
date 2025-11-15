@@ -21,6 +21,8 @@ class AppNetwork {
     return "list_movies.json?limit=30&page=${pageID}";
   }
 
+  static String ListNewMoviesByYear =
+      "https://yts.mx/api/v2/list_movies.json?sort_by=year";
   static String MovieDetails(int movie_id) {
     return "https://yts.mx/api/v2/movie_details.json?movie_id=${movie_id}&with_images=true&with_cast=true";
   }

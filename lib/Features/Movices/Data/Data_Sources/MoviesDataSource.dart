@@ -5,4 +5,5 @@ abstract class Moviesdatasource {
   Future<Moviesmodel> GetMoviesByCategory(String genere);
   Future<Moviesmodel> GetMoviesBySugestion(int MovieID);
   Future<MovieDetaialsResponse> GetMovieDetials(int MovieID);
+  Future<Moviesmodel> GetRelesedMovies();
 }

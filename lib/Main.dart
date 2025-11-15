@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies/Core/Theme/AppTheme.dart';
-import 'package:movies/MainLayer.dart';
+import 'package:movies/Features/Onboarding/Widgets/ExplorePage.dart';
 
 void main() {
   runApp(Main());
@@ -14,7 +14,7 @@ class Main extends StatelessWidget {
     return MaterialApp(
       theme: AppTheme.DarkTheme,
       debugShowCheckedModeBanner: false,
-      home: Mainlayer(),
+      home: Explorepage(),
     );
   }
 }

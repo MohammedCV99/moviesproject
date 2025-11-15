@@ -180,7 +180,7 @@ class _MoviedetialsState extends State<Moviedetials> {
                   SliverToBoxAdapter(child: MainTitle("Similar")),
                   SliverToBoxAdapter(
                     child: SizedBox(
-                      height: 450, // Keep fixed height or use ConstrainedBox
+                      height: 450,
                       child: buildMoviesList(
                         state: state.sources,
                         lenght: state.sources.length,
@@ -188,41 +188,45 @@ class _MoviedetialsState extends State<Moviedetials> {
                     ),
                   ),
 
-                  SliverToBoxAdapter(child: MainTitle("Cast")),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate((context, index) {
-                      return Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.LightGrey,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: ListTile(
-                            title: Text(
-                              "Name: " + widget.Data.cast[index].name,
-                              style: TextStyle(color: AppColors.White),
+                  widget.Data.cast.length != 0
+                      ? SliverToBoxAdapter(child: MainTitle("Cast"))
+                      : Container(),
+                  widget.Data.cast.length != 0
+                      ? SliverList(
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                          return Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.LightGrey,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: ListTile(
+                                title: Text(
+                                  "Name: " + widget.Data.cast[index].name,
+                                  style: TextStyle(color: AppColors.White),
+                                ),
+                                subtitle: Text(
+                                  widget.Data.cast[index].characterName != ""
+                                      ? "Character: " +
+                                          widget.Data.cast[index].characterName
+                                      : "",
+                                  style: TextStyle(color: AppColors.White),
+                                ),
+                                leading:
+                                    widget.Data.cast[index].urlSmallImage != ""
+                                        ? Image.network(
+                                          widget.Data.cast[index].urlSmallImage,
+                                        )
+                                        : Image.network(
+                                          "https://www.seekpng.com/png/detail/202-2024994_profile-icon-profile-logo-no-background.png",
+                                        ),
+                              ),
                             ),
-                            subtitle: Text(
-                              widget.Data.cast[index].characterName != ""
-                                  ? "Character: " +
-                                      widget.Data.cast[index].characterName
-                                  : "",
-                              style: TextStyle(color: AppColors.White),
-                            ),
-                            leading:
-                                widget.Data.cast[index].urlSmallImage != ""
-                                    ? Image.network(
-                                      widget.Data.cast[index].urlSmallImage,
-                                    )
-                                    : Image.network(
-                                      "https://www.seekpng.com/png/detail/202-2024994_profile-icon-profile-logo-no-background.png",
-                                    ),
-                          ),
-                        ),
-                      );
-                    }, childCount: widget.Data.cast.length),
-                  ),
+                          );
+                        }, childCount: widget.Data.cast.length),
+                      )
+                      : Container(),
                   SliverToBoxAdapter(child: MainTitle("Genres")),
 
                   SliverGrid.builder(
@@ -251,6 +255,15 @@ class _MoviedetialsState extends State<Moviedetials> {
                     itemCount: widget.Data.genres.length,
                   ),
                 ],
+              ),
+            );
+          } else if (state is SuggestionTabLoadingState) {
+            return Center(child: CircularProgressIndicator());
+          } else if (state is SuggestionTabErrorstate) {
+            return Center(
+              child: Text(
+                state.Error,
+                style: TextStyle(color: AppColors.White),
               ),
             );
           } else {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies/Core/Assets/AppColors.dart';
 import 'package:movies/Core/HelperElements/Navigator.dart';
-import 'package:movies/Core/ServiceLocater/Movies/BrowseServiceLocater.dart';
+import 'package:movies/Core/ServiceLocater/Movies/MainMoviesServiceLocater.dart';
 import 'package:movies/Features/Movices/Data/Models/MoviesModel.dart';
 import 'package:movies/Features/Movices/Persentation/View/Browse/Widgets/MovieDetials.dart';
-import 'package:movies/Features/Movices/Persentation/ViewModel/BrowseTab/BrowseTabCubit.dart';
-import 'package:movies/Features/Movices/Persentation/ViewModel/BrowseTab/BrowseTabState.dart';
+import 'package:movies/Features/Movices/Persentation/View/MainWidget/RatingWidget.dart';
+import 'package:movies/Features/Movices/Persentation/ViewModel/Main/MainBrowseCubit.dart';
+import 'package:movies/Features/Movices/Persentation/ViewModel/Main/MainBrowseState.dart';
 
 class buildMoviesList extends StatefulWidget {
   const buildMoviesList({super.key, required this.state, required this.lenght});
@@ -18,7 +18,7 @@ class buildMoviesList extends StatefulWidget {
 
 class _buildMoviesListState extends State<buildMoviesList> {
   @override
-  late BrowseTabCubit movieCubit;
+  late MainMoviesCubit movieCubit;
 
   @override
   void initState() {
@@ -30,14 +30,14 @@ class _buildMoviesListState extends State<buildMoviesList> {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: movieCubit,
-      child: BlocBuilder<BrowseTabCubit, BrowseTabState>(
+      child: BlocBuilder<MainMoviesCubit, MainMoviesState>(
         buildWhen:
             (previous, current) =>
                 current is DetialsErrorstate ||
                 current is DetialsInitState ||
                 current is DetialsLoadingState ||
                 current is DetialsSuccessState ||
-                current is BrowseTabSuccessState,
+                current is MainMoviesSuccessState,
         builder: (context, state) {
           return Expanded(
             child: GridView.builder(
@@ -47,14 +47,14 @@ class _buildMoviesListState extends State<buildMoviesList> {
                 return InkWell(
                   onTap: () {
                     context
-                        .read<BrowseTabCubit>()
+                        .read<MainMoviesCubit>()
                         .getMovieDetial(widget.state[index].id)
                         .then((onValue) {
                           routeNavigator(
                             Moviedetials(
                               Data:
                                   context
-                                      .read<BrowseTabCubit>()
+                                      .read<MainMoviesCubit>()
                                       .DetialsResponse,
                             ),
                             context,
@@ -73,34 +73,7 @@ class _buildMoviesListState extends State<buildMoviesList> {
                           height: 280,
                         ),
                       ),
-                      Positioned(
-                        top: 5,
-                        left: 5,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.LightBlack,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          width: 55,
-
-                          child: Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Row(
-                              children: [
-                                Text(
-                                  movie.rating.toString(),
-                                  style: TextStyle(
-                                    color: AppColors.White,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(width: 5),
-                                Icon(Icons.star, color: Colors.yellow),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                      RatingWidget(movie.rating.toString()),
                     ],
                   ),
                 );

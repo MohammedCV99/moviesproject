@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies/Core/ServiceLocater/Movies/BrowseServiceLocater.dart';
+import 'package:movies/Core/ServiceLocater/Movies/MainMoviesServiceLocater.dart';
 import 'package:movies/Features/Categories/CatogiresData.dart';
 import 'package:movies/Features/Movices/Data/Models/MoviesModel.dart';
 import 'package:movies/Features/Movices/Persentation/View/Browse/Widgets/CategorySelector.dart';
 import 'package:movies/Features/Movices/Persentation/View/Browse/Widgets/buildMovieList.dart';
-import 'package:movies/Features/Movices/Persentation/ViewModel/BrowseTab/BrowseTabCubit.dart';
-import 'package:movies/Features/Movices/Persentation/ViewModel/BrowseTab/BrowseTabState.dart';
+import 'package:movies/Features/Movices/Persentation/ViewModel/Main/MainBrowseCubit.dart';
+import 'package:movies/Features/Movices/Persentation/ViewModel/Main/MainBrowseState.dart';
 
 class MoviesBrowse extends StatefulWidget {
   const MoviesBrowse({super.key});
@@ -19,7 +19,7 @@ class _MoviesBrowseState extends State<MoviesBrowse> {
   int selectedCategoryId = 0;
   List<Movie> Data = [];
 
-  late BrowseTabCubit movieCubit;
+  late MainMoviesCubit movieCubit;
 
   @override
   void initState() {
@@ -37,15 +37,15 @@ class _MoviesBrowseState extends State<MoviesBrowse> {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: movieCubit,
-      child: BlocBuilder<BrowseTabCubit, BrowseTabState>(
+      child: BlocBuilder<MainMoviesCubit, MainMoviesState>(
         buildWhen:
             (previous, current) =>
-                current is BrowseTabSuccessState ||
-                current is BrowseTabInitState ||
-                current is BrowseTabErrorstate ||
-                current is BrowseTabLoadingState,
+                current is MainMoviesSuccessState ||
+                current is MainMoviesInitState ||
+                current is MainMoviesErrorstate ||
+                current is MainMoviesLoadingState,
         builder: (context, state) {
-          if (state is BrowseTabLoadingState) {
+          if (state is MainMoviesLoadingState) {
             return Scaffold(
               body: SafeArea(
                 child: Column(
@@ -58,7 +58,7 @@ class _MoviesBrowseState extends State<MoviesBrowse> {
                         });
                         print('Selected: ${cat.Name}');
                         context
-                            .read<BrowseTabCubit>()
+                            .read<MainMoviesCubit>()
                             .getMoviesByCategorieUsecaseMethod(cat.Name);
                       },
                       cat: CategoriesList,
@@ -70,7 +70,7 @@ class _MoviesBrowseState extends State<MoviesBrowse> {
                 ),
               ),
             );
-          } else if (state is BrowseTabSuccessState) {
+          } else if (state is MainMoviesSuccessState) {
             Data = state.sources;
             return Scaffold(
               body: SafeArea(
@@ -84,7 +84,7 @@ class _MoviesBrowseState extends State<MoviesBrowse> {
                         });
                         print('Selected: ${cat.Name}');
                         context
-                            .read<BrowseTabCubit>()
+                            .read<MainMoviesCubit>()
                             .getMoviesByCategorieUsecaseMethod(cat.Name);
                       },
                       cat: CategoriesList,
@@ -100,10 +100,9 @@ class _MoviesBrowseState extends State<MoviesBrowse> {
                 ),
               ),
             );
-          } else if (state is BrowseTabErrorstate) {
+          } else if (state is MainMoviesErrorstate) {
             return const Center(child: Text('An error occurred.'));
           } else {
-            // ✅ Add this final return to handle MovieInitState or others
             return const Center(child: Text('Loading movies...'));
           }
         },

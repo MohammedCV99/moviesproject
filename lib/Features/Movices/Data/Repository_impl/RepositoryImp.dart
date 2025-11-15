@@ -45,4 +45,16 @@ class MoviesRepositoryImp extends MoviesRepository {
       throw Exception('Failed to fetch movies: $e');
     }
   }
+
+  @override
+  Future<List<Movie>> GetRelesedMovies() async {
+    // TODO: implement GetRelesedMovies
+    try {
+      Moviesmodel response = await _MovieDataSource.GetRelesedMovies();
+
+      return response.data.movies;
+    } catch (e) {
+      throw Exception('Failed to fetch movies: $e');
+    }
+  }
 }
