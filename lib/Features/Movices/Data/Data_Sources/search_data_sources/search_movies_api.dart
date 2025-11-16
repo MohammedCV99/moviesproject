@@ -8,13 +8,13 @@ final Dio dio;
 SearchMoviesApi():dio=Dio();
 
 
-Future<Moviesmodel> searchMovies(String movieName) async {
+Future<List<Movie>> searchMovies(String movieName) async {
     Dio dio = Dio();
     try {
       final response = await dio.get(AppNetwork.MovieSearch(movieName));
       if (response.statusCode == 200 ||response.statusCode==201 ) {
-        
-        return Moviesmodel.fromJson(response.data);
+       final newResponse= Moviesmodel.fromJson(response.data);
+        return newResponse.data.movies;
       } else {
         throw Exception('Failed with status: ${response.statusCode}');
       }
