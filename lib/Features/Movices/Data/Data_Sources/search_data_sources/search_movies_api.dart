@@ -13,7 +13,7 @@ Future<List<Movie>> searchMovies(String movieName) async {
     try {
       final response = await dio.get(AppNetwork.MovieSearch(movieName));
       if (response.statusCode == 200 ||response.statusCode==201 ) {
-       final newResponse= Moviesmodel.fromJson(response.data);
+      final newResponse= Moviesmodel.fromJson(response.data);
         return newResponse.data.movies;
       } else {
         throw Exception('Failed with status: ${response.statusCode}');
