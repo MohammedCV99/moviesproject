@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies/Core/Theme/AppTheme.dart';
 import 'package:movies/Features/Onboarding/Widgets/ExplorePage.dart';
 
@@ -11,10 +12,14 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: AppTheme.DarkTheme,
-      debugShowCheckedModeBanner: false,
-      home: Explorepage(),
+    return ScreenUtilInit(
+      designSize: Size(430, 932),
+      child: MaterialApp(
+        
+        theme: AppTheme.DarkTheme,
+        debugShowCheckedModeBanner: false,
+        home: Explorepage(),
+      ),
     );
   }
 }

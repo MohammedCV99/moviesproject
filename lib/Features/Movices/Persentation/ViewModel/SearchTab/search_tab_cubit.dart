@@ -1,5 +1,6 @@
 
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/Features/Movices/Data/Data_Sources/search_data_sources/search_movies_api.dart';
 import 'package:movies/Features/Movices/Data/Models/MoviesModel.dart';
@@ -7,15 +8,17 @@ import 'package:movies/Features/Movices/Persentation/ViewModel/SearchTab/search_
 
 class SearchTabCubit extends Cubit<SearchTabState>{
 
-  SearchTabCubit(this.searchMoviesApi):super(SearchTabInitState());
-final  SearchMoviesApi searchMoviesApi;
+  SearchTabCubit(this._searchMoviesApi):super(SearchTabInitState());
+final  SearchMoviesApi _searchMoviesApi;
 
-Future<void> searchMovie(String movieName) async {
+TextEditingController searchController = TextEditingController();
+
+Future<void> searchMovie() async {
   emit(SearchTabLoadingState());
     try {
-      final List<Movie> response = await searchMoviesApi.searchMovies(movieName);
+      final List<Movie> response = await _searchMoviesApi.searchMovies(searchController.text);
       if (response.isEmpty){
-        emit(SearchTabEmptyState(message: movieName));
+        emit(SearchTabEmptyState(message: searchController.text));
       }else {
         emit(SearchTabSuccessState(sources: response));
       }

@@ -56,7 +56,7 @@ class _buildMoviesListState extends State<buildMoviesList> {
                                   context
                                       .read<MainMoviesCubit>()
                                       .DetialsResponse,
-                            ),
+                            ), 
                             context,
                           );
                         });

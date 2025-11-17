@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movies/Core/Assets/AppColors.dart';
 import 'package:movies/Features/Movices/Persentation/View/Browse/MoviesBrowse.dart';
 import 'package:movies/Features/Movices/Persentation/View/Home/MoviesHome.dart';
+import 'package:movies/Features/Movices/Persentation/View/Search/Movies_search.dart';
 
 class Mainlayer extends StatefulWidget {
   const Mainlayer({super.key});
@@ -14,7 +15,7 @@ class _MainlayerState extends State<Mainlayer> {
   @override
   List<Widget> page = [
     Movieshome(),
-    Container(color: AppColors.Red),
+    MoviesSearch(),
     MoviesBrowse(),
     Container(color: AppColors.White),
   ];
