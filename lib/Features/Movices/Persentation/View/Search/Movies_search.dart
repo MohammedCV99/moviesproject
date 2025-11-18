@@ -8,7 +8,6 @@ import 'package:movies/Features/Movices/Data/Data_Sources/search_data_sources/se
 import 'package:movies/Features/Movices/Data/Models/MoviesModel.dart';
 import 'package:movies/Features/Movices/Persentation/View/Browse/Widgets/MovieDetials.dart';
 import 'package:movies/Features/Movices/Persentation/View/MainWidget/RatingWidget.dart';
-import 'package:movies/Features/Movices/Persentation/ViewModel/Main/MainBrowseCubit.dart';
 import 'package:movies/Features/Movices/Persentation/ViewModel/SearchTab/search_tab_cubit.dart';
 import 'package:movies/Features/Movices/Persentation/ViewModel/SearchTab/search_tab_state.dart';
 

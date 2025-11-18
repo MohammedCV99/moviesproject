@@ -11,7 +11,7 @@ SearchMoviesApi():dio=Dio();
 Future<List<Movie>> searchMovies(String movieName) async {
     Dio dio = Dio(
       BaseOptions(
-        baseUrl: 'https://yts.mx/api/v2/'
+        baseUrl: AppNetwork.MoviesURL
       )
     );
     try {
