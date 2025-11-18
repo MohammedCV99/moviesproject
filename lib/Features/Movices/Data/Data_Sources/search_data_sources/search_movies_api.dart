@@ -9,7 +9,11 @@ SearchMoviesApi():dio=Dio();
 
 
 Future<List<Movie>> searchMovies(String movieName) async {
-    Dio dio = Dio();
+    Dio dio = Dio(
+      BaseOptions(
+        baseUrl: 'https://yts.mx/api/v2/'
+      )
+    );
     try {
       final response = await dio.get(AppNetwork.MovieSearch(movieName));
       if (response.statusCode == 200 ||response.statusCode==201 ) {
@@ -26,3 +30,4 @@ Future<List<Movie>> searchMovies(String movieName) async {
   }
 
 }
+
