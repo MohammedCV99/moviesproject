@@ -1,10 +1,16 @@
 class LoginRequestModel {
-  final String email;
-  final String password;
+  final String message;
+  final String data;
 
-  LoginRequestModel({required this.email, required this.password});
+  LoginRequestModel({required this.message, required this.data});
 
   Map<String, dynamic> toJson() {
-    return {'email': email, 'password': password};
+    return {'message': message, 'data': data};
   }
+
+  factory LoginRequestModel.fromJson(Map<String, dynamic> json) =>
+      LoginRequestModel(
+        message: json['message'] as String? ?? "",
+        data: json['data'] as String? ?? "",
+      );
 }

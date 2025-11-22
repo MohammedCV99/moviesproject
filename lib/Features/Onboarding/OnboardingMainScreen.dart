@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movies/Core/Assets/AppConst.dart' show Appconsts;
 import 'package:movies/Core/HelperElements/Navigator.dart';
+import 'package:movies/Features/Auth/Persentation/View/LoginScreen.dart';
 import 'package:movies/Features/Onboarding/Data/OnboardingData.dart';
 import 'package:movies/Features/Onboarding/Widgets/OnboardingDesignWidget.dart';
 import 'package:movies/MainLayer.dart';
@@ -28,7 +29,7 @@ class _OnboardingmainscreenState extends State<Onboardingmainscreen> {
 
           nextTab: () {
             if (PageNumber == 4) {
-              routeNavigator(Mainlayer(), context);
+              routeNavigator(Login(), context);
             } else {
               setState(() {
                 PageNumber++;

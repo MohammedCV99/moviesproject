@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/Features/Movices/Data/Models/MoviesDetailsModel.dart';
 import 'package:movies/Features/Movices/Data/Models/MoviesModel.dart';

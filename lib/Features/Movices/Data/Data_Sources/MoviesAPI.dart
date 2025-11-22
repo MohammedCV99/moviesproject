@@ -11,8 +11,7 @@ class Moviesapi extends Moviesdatasource {
     try {
       final response = await dio.get(AppNetwork.MoviesByCategory(genere));
 
-      if (response.statusCode == 200) {
-        // ✅ unwrap 'data' from the response
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return Moviesmodel.fromJson(response.data);
       } else {
         throw Exception('Failed with status: ${response.statusCode}');
@@ -30,7 +29,7 @@ class Moviesapi extends Moviesdatasource {
     Dio dio = Dio();
     try {
       final response = await dio.get(AppNetwork.MovieSuggestions(MovieID));
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         // ✅ unwrap 'data' from the response
         return Moviesmodel.fromJson(response.data);
       } else {
@@ -48,7 +47,7 @@ class Moviesapi extends Moviesdatasource {
     Dio dio = Dio();
     try {
       final response = await dio.get(AppNetwork.MovieDetails(MovieID));
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         // ✅ unwrap 'data' from the response
         return MovieDetaialsResponse.fromJson(response.data);
       } else {
@@ -67,8 +66,25 @@ class Moviesapi extends Moviesdatasource {
     Dio dio = Dio();
     try {
       final response = await dio.get(AppNetwork.ListNewMoviesByYear);
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return Moviesmodel.fromJson(response.data);
+      } else {
+        throw Exception('Failed with status: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw Exception('Network error: ${e.message}');
+    } catch (e) {
+      throw Exception('Unexpected error: $e');
+    }
+  }
+
+  Future<List<Movie>> searchMovies(String movieName) async {
+    Dio dio = Dio();
+    try {
+      final response = await dio.get(AppNetwork.MovieSearch(movieName));
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final newResponse = Moviesmodel.fromJson(response.data);
+        return newResponse.data.movies;
       } else {
         throw Exception('Failed with status: ${response.statusCode}');
       }

@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:movies/Core/Assets/AppColors.dart';
 import 'package:movies/Features/Movices/Persentation/View/Browse/MoviesBrowse.dart';
 import 'package:movies/Features/Movices/Persentation/View/Home/MoviesHome.dart';
+import 'package:movies/Features/Movices/Persentation/View/Search/MoviesSearch.dart';
+import 'package:movies/Profile/Persentation/View/UserProfile.dart';
 
 class Mainlayer extends StatefulWidget {
-  const Mainlayer({super.key});
+  final String Token;
+  const Mainlayer({super.key, required this.Token});
 
   @override
   State<Mainlayer> createState() => _MainlayerState();
@@ -12,11 +15,12 @@ class Mainlayer extends StatefulWidget {
 
 class _MainlayerState extends State<Mainlayer> {
   @override
+  @override
   List<Widget> page = [
     Movieshome(),
-    Container(color: AppColors.Red),
+    MoviesSearch(),
     MoviesBrowse(),
-    Container(color: AppColors.White),
+    ProfileScreen(),
   ];
   int currantIndent = 0;
 
