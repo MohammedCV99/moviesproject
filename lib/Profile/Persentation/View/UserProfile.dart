@@ -1,17 +1,25 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/Core/Assets/AppColors.dart';
+import 'package:movies/Core/HelperElements/Navigator.dart';
 import 'package:movies/Core/HelperElements/ProfileAvaters.dart';
+import 'package:movies/Core/HelperElements/TokenCache.dart';
+import 'package:movies/Core/ServiceLocater/Profile/ProfileServiceLocater.dart';
+import 'package:movies/Features/Auth/Persentation/View/LoginScreen.dart';
 import 'package:movies/Features/Movices/Persentation/View/Browse/Widgets/MovieDetials.dart';
 import 'package:movies/Features/Movices/Persentation/View/MainWidget/RatingWidget.dart';
 import 'package:movies/Profile/Persentation/View/edit_profile.dart';
-import 'package:movies/Profile/Persentation/Widgets/custom_button.dart';
-import 'package:movies/Profile/Persentation/Widgets/watchlist.dart';
+import 'package:movies/Profile/Persentation/View/Widgets/custom_button.dart';
+import 'package:movies/Profile/Persentation/View/Widgets/watchlist.dart';
+import 'package:movies/Profile/Persentation/ViewModel/ProfileCubit.dart';
+import 'package:movies/Profile/Persentation/ViewModel/ProfileState.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:movies/Features/Movices/Data/Models/MoviesDetailsModel.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({super.key, required this.token});
+  final String token;
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
@@ -24,21 +32,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List<MovieDetials> watchlist = [];
   List<MovieDetials> historylist = [];
 
+  late Profilecubit profilecubit;
+
   @override
   void initState() {
     super.initState();
-    loadProfile();
+    profilecubit = Profileservicelocater.makeProfileCubit();
+    profilecubit.GetProfile(widget.token);
+
     loadWatchlist();
     loadHistory();
-  }
-
-  Future<void> loadProfile() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      name = prefs.getString("name") ?? "John Safwat";
-      email = prefs.getString("email") ?? "john@example.com";
-      avatarId = prefs.getInt("avatarId") ?? 1;
-    });
   }
 
   Future<void> loadWatchlist() async {
@@ -58,94 +61,127 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xff1B1B1B),
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildProfileCard(),
-            const SizedBox(height: 20),
-            _buildTabBar(),
-            Expanded(
-              child:
-                  selectedTab == 0
-                      ? _buildMoviesGrid(watchlist)
-                      : _buildMoviesGrid(historylist),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildProfileCard() {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xff222222),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        children: [
-          CircleAvatar(
-            radius: 40,
-            backgroundImage: AssetImage(
-              avaters.firstWhere((a) => a.ID == avatarId).IMGurl,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            name,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildCounter(watchlist.length.toString(), "Wish List"),
-              const SizedBox(width: 50),
-              _buildCounter(historylist.length.toString(), "History"),
-            ],
-          ),
-          const SizedBox(height: 22),
-          Row(
-            children: [
-              Expanded(
-                child: CustomButton(
-                  text: "Edit Profile",
-                  bgColor: Colors.yellow,
-                  textColor: Colors.black,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const EditProfileScreen(),
+      body: BlocProvider.value(
+        value: profilecubit,
+        child: BlocBuilder<Profilecubit, Profilestate>(
+          buildWhen:
+              (previous, current) =>
+                  current is ProfileinitState ||
+                  current is GetProfileErrorState ||
+                  current is GetProfileSuccessState ||
+                  current is GetProfileLoadingState,
+          builder: (context, state) {
+            if (state is GetProfileSuccessState) {
+              return SafeArea(
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: const Color(0xff222222),
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                    );
-                  },
+                      child: Column(
+                        children: [
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundImage: AssetImage(
+                              avaters[state.response.data.avaterId - 1].IMGurl,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            state.response.data.name,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              _buildCounter(
+                                watchlist.length.toString(),
+                                "Wish List",
+                              ),
+                              const SizedBox(width: 50),
+                              _buildCounter(
+                                historylist.length.toString(),
+                                "History",
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 22),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomButton(
+                                  text: "Edit Profile",
+                                  bgColor: Colors.yellow,
+                                  textColor: Colors.black,
+                                  onTap: () {
+                                    routeNavigator(
+                                      BlocProvider(
+                                        create:
+                                            (_) =>
+                                                Profileservicelocater.makeProfileCubit(),
+                                        child: EditProfileScreen(
+                                          token: widget.token,
+                                          name: state.response.data.name,
+                                          email: state.response.data.email,
+                                        ),
+                                      ),
+                                      context,
+                                    );
+                                  },
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: CustomButton(
+                                  text: "Exit",
+                                  bgColor: Colors.red,
+                                  textColor: Colors.white,
+                                  onTap: () async {
+                                    Tokencache.SetToken("");
+                                    routeNavigator(Login(), context);
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    _buildTabBar(),
+                    Expanded(
+                      child:
+                          selectedTab == 0
+                              ? _buildMoviesGrid(watchlist)
+                              : _buildMoviesGrid(historylist),
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: CustomButton(
-                  text: "Exit",
-                  bgColor: Colors.red,
-                  textColor: Colors.white,
-                  onTap: () async {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    await prefs.clear();
-                    Navigator.pushReplacementNamed(context, "/login");
-                  },
+              );
+            } else if (state is GetProfileLoadingState) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is GetProfileErrorState) {
+              return Center(
+                child: Text(
+                  "There is an error !!",
+                  style: TextStyle(color: AppColors.MainColor),
                 ),
-              ),
-            ],
-          ),
-        ],
+              );
+            } else {
+              return Container();
+            }
+          },
+        ),
       ),
     );
   }

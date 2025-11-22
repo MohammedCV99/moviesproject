@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movies/Core/Assets/AppColors.dart';
 import 'package:movies/Features/Movices/Persentation/View/Browse/MoviesBrowse.dart';
 import 'package:movies/Features/Movices/Persentation/View/Home/MoviesHome.dart';
 import 'package:movies/Features/Movices/Persentation/View/Search/MoviesSearch.dart';
@@ -15,18 +14,23 @@ class Mainlayer extends StatefulWidget {
 
 class _MainlayerState extends State<Mainlayer> {
   @override
-  @override
-  List<Widget> page = [
-    Movieshome(),
-    MoviesSearch(),
-    MoviesBrowse(),
-    ProfileScreen(),
-  ];
+  late List<Widget> pages;
   int currantIndent = 0;
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    pages = [
+      Movieshome(),
+      MoviesSearch(),
+      MoviesBrowse(),
+      ProfileScreen(token: widget.Token),
+    ];
+  }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: page[currantIndent],
+      body: pages[currantIndent],
       bottomNavigationBar: BottomNavigationBar(
         onTap:
             (value) => setState(() {

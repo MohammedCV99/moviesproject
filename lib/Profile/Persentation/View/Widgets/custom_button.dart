@@ -4,9 +4,15 @@ class CustomButton extends StatelessWidget {
   final String text;
   final Color bgColor;
   final Color textColor;
-  final VoidCallback? onTap;
+  final Function() onTap;
 
-  const CustomButton({super.key, required this.text, required this.bgColor, required this.textColor, this.onTap});
+  const CustomButton({
+    super.key,
+    required this.text,
+    required this.bgColor,
+    required this.textColor,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {

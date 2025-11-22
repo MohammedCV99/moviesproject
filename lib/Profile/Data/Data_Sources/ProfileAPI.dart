@@ -50,7 +50,7 @@ class Profileapi extends Profiledatasources {
       print("response ############## ${response.data}");
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return jsonDecode(response.data);
+        return ProfileResponse.fromJson(response.data);
       } else {
         throw Exception('Failed with status: ${response.data}');
       }
@@ -62,14 +62,10 @@ class Profileapi extends Profiledatasources {
   }
 
   @override
-  Future<ProfileResponse> UpdateProfile(
-    String token,
-    String email,
-    int avaterId,
-  ) async {
+  Future<void> UpdateProfile(String token, String email, int avaterId) async {
     Dio dio = Dio();
     try {
-      final response = await dio.post(
+      final response = await dio.patch(
         AppNetwork.updateProfile,
         data: AppNetworkBody.updateProfile(email, avaterId),
         options: Options(
@@ -82,7 +78,7 @@ class Profileapi extends Profiledatasources {
       print("response ############## ${response.data}");
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return jsonDecode(response.data);
+        print(response.data);
       } else {
         throw Exception('Failed with status: ${response.data}');
       }

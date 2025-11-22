@@ -1,74 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movies/Core/Assets/AppColors.dart';
+import 'package:movies/Core/HelperElements/Navigator.dart';
 import 'package:movies/Core/HelperElements/ProfileAvaters.dart';
+import 'package:movies/Core/HelperElements/TokenCache.dart';
+import 'package:movies/Features/Auth/Persentation/View/LoginScreen.dart';
 import 'package:movies/Features/Auth/Persentation/View/Widget/text_field.dart';
-import 'package:movies/Features/Onboarding/OnboardingMainScreen.dart';
+import 'package:movies/MainLayer.dart';
 import 'package:movies/Profile/Persentation/View/UserProfile.dart';
-import 'package:movies/Profile/Persentation/Widgets/custom_button.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:movies/Profile/Persentation/View/Widgets/custom_button.dart';
+import 'package:movies/Profile/Persentation/ViewModel/ProfileCubit.dart';
+import 'package:movies/Profile/Persentation/ViewModel/ProfileState.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({super.key});
+  const EditProfileScreen({
+    super.key,
+    required this.token,
+    required this.name,
+    required this.email,
+  });
+  final String token;
+  final String name;
+  final String email;
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  final TextEditingController _nameController = TextEditingController(
-    text: "John Doe",
-  );
-  final TextEditingController _emailController = TextEditingController(
-    text: "JohnDoe@gamil.com",
-  );
-  int selectedAvatarId = 1;
+  late final TextEditingController _nameController;
+  late final TextEditingController _emailController;
 
   @override
   void initState() {
     super.initState();
-    _loadProfile();
+    _nameController = TextEditingController(text: widget.name);
+    _emailController = TextEditingController(text: widget.email);
   }
 
-  Future<void> _loadProfile() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _nameController.text = prefs.getString("name") ?? "John Safwat";
-      _emailController.text = prefs.getString("email") ?? "john@example.com";
-      selectedAvatarId = prefs.getInt("avatarId") ?? 1;
-    });
-  }
-
-  Future<void> _saveProfile() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString("name", _nameController.text);
-    await prefs.setString("email", _emailController.text);
-    await prefs.setInt("avatarId", selectedAvatarId);
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const ProfileScreen()),
-    );
-  }
-
-  Future<void> _deleteAccount() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-
-    setState(() {
-      _nameController.text = "John Safwat";
-      _emailController.text = "john@example.com";
-      selectedAvatarId = 1;
-    });
-
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text("Account Deleted")));
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const Onboardingmainscreen()),
-    );
-  }
+  int selectedAvatarId = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +73,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       backgroundColor: AppColors.MainColor,
                       backgroundImage: AssetImage(
                         avaters
-                            .firstWhere((a) => a.ID == selectedAvatarId)
+                            .firstWhere(
+                              (avatar) => avatar.ID == selectedAvatarId,
+                            )
                             .IMGurl,
                       ),
                     ),
@@ -121,15 +94,54 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   obscureText: false,
                 ),
                 const SizedBox(height: 300),
-                Center(
-                  child: SizedBox(
-                    width: 400,
-                    height: 56,
-                    child: CustomButton(
-                      text: "Delete Account",
-                      bgColor: AppColors.Red,
-                      textColor: AppColors.White,
-                      onTap: _deleteAccount,
+                BlocListener<Profilecubit, Profilestate>(
+                  listener: (context, state) {
+                    if (state is deleteProfileLoadingState) {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder:
+                            (_) => Center(child: CircularProgressIndicator()),
+                      );
+                    } else if (state is deleteProfileErrorState) {
+                      Navigator.pop(context);
+                      Fluttertoast.showToast(
+                        msg: "Error Ocurred",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: AppColors.MainColor,
+                        textColor: AppColors.LightBlack,
+                        fontSize: 16.0,
+                      );
+                    } else if (state is deleteProfileSuccessState) {
+                      Fluttertoast.showToast(
+                        msg: "profile Deleted Successfully",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: AppColors.MainColor,
+                        textColor: AppColors.LightBlack,
+                        fontSize: 16.0,
+                      );
+                      Tokencache.SetToken("");
+                      routeNavigator(Login(), context);
+                    }
+                  },
+                  child: Center(
+                    child: SizedBox(
+                      width: 400,
+                      height: 56,
+                      child: CustomButton(
+                        text: "Delete Account",
+                        bgColor: AppColors.Red,
+                        textColor: AppColors.White,
+                        onTap: () {
+                          context.read<Profilecubit>().deleteProfile(
+                            widget.token,
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -137,18 +149,56 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ],
             ),
           ),
-          Positioned(
-            left: 16,
-            right: 16,
-            bottom: 16,
-            child: SizedBox(
-              width: 400,
-              height: 56,
-              child: CustomButton(
-                text: "Update Data",
-                bgColor: AppColors.MainColor,
-                textColor: AppColors.Black,
-                onTap: _saveProfile,
+          BlocListener<Profilecubit, Profilestate>(
+            listener: (context, state) {
+              if (state is updateProfileLoadingState) {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) => Center(child: CircularProgressIndicator()),
+                );
+              } else if (state is updateProfileErrorState) {
+                Fluttertoast.showToast(
+                  msg: "Error Ocurred",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: AppColors.MainColor,
+                  textColor: AppColors.LightBlack,
+                  fontSize: 16.0,
+                );
+              } else if (state is updateProfileSuccessState) {
+                Fluttertoast.showToast(
+                  msg: "profile update Successfully",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: AppColors.MainColor,
+                  textColor: AppColors.LightBlack,
+                  fontSize: 16.0,
+                );
+                routeNavigator(Mainlayer(Token: widget.token), context);
+              }
+            },
+            child: Positioned(
+              left: 16,
+              right: 16,
+              bottom: 16,
+              child: SizedBox(
+                width: 400,
+                height: 56,
+                child: CustomButton(
+                  text: "Update Data",
+                  bgColor: AppColors.MainColor,
+                  textColor: AppColors.Black,
+                  onTap: () {
+                    context.read<Profilecubit>().updateProfile(
+                      widget.token,
+                      _emailController.text,
+                      selectedAvatarId,
+                    );
+                  },
+                ),
               ),
             ),
           ),
