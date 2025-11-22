@@ -13,8 +13,8 @@ we use in this app Flutter framework with help of the below packages :
 *  fluttertoast: 
 *  shared_preferences: ^2.5.3
 below attachement show the app in more details 
-![WhatsApp Image 2025-11-22 at 23 11 24](https://github.com/user-attachments/assets/7b644480-0fb6-4cd9-9691-ce489757c0cc)
-![WhatsApp Image 2025-11-22 at 23 11 24 (1)](https://github.com/user-attachments/assets/cc6f13f5-1195-4344-9f47-c4611a5a298a)
+![WhatsApp Image 2025-11-22 at 23 11 24](https://github.com/user-attachments/assets/7b644480-0fb6-4cd9-9691-ce489757c0cc) ![WhatsApp Image 2025-11-22 at 23 11 24 (1)](https://github.com/user-attachments/assets/cc6f13f5-1195-4344-9f47-c4611a5a298a)
+
 ![WhatsApp Image 2025-11-22 at 23 11 25](https://github.com/user-attachments/assets/224546b4-d106-47c0-a67c-4a47f378d2af)
 ![WhatsApp Image 2025-11-22 at 23 11 25 (1)](https://github.com/user-attachments/assets/0a268256-494e-473f-8ae3-8f9004ac5dc5)
 ![WhatsApp Image 2025-11-22 at 23 11 25 (2)](https://github.com/user-attachments/assets/dbb05342-0950-48ed-9f1e-759485c5b0a0)
