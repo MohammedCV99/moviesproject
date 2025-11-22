@@ -7,5 +7,5 @@ abstract class Profiledatasources {
     String email,
     int avaterId,
   );
-  Future<ProfileResponse> DeleteProfile(String token);
+  Future<void> DeleteProfile(String token);
 }

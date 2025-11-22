@@ -13,9 +13,9 @@ class AppNetwork {
     return "favorites/is-favorite/${MovieID}";
   }
 
-  static String updateProfile = "profile";
-  static String DeleteProfile = "profile";
-  static String GetProfile = "profile";
+  static String updateProfile = "https://route-movie-apis.vercel.app/profile";
+  static String DeleteProfile = "https://route-movie-apis.vercel.app/profile";
+  static String GetProfile = "https://route-movie-apis.vercel.app/profile";
   static String ListAllMovies(int pageID) {
     return "list_movies.json?limit=30&page=${pageID}";
   }
