@@ -1,30 +1,99 @@
+class Moviesmodel {
+  final String status;
+  final String statusMessage;
+  final YtsData data;
+  final YtsMeta meta;
+
+  Moviesmodel({
+    required this.status,
+    required this.statusMessage,
+    required this.data,
+    required this.meta,
+  });
+
+  factory Moviesmodel.fromJson(Map<String, dynamic> json) {
+    return Moviesmodel(
+      status: json['status'] as String? ?? '',
+      statusMessage: json['status_message'] as String? ?? '',
+      data: YtsData.fromJson(json['data'] as Map<String, dynamic>? ?? {}),
+      meta: YtsMeta.fromJson(json['@meta'] as Map<String, dynamic>? ?? {}),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'status': status,
+      'status_message': statusMessage,
+      'data': data.toJson(),
+      '@meta': meta.toJson(),
+    };
+  }
+}
+
+class YtsData {
+  final int movieCount;
+  final int limit;
+  final int pageNumber;
+  final List<Movie> movies;
+
+  YtsData({
+    required this.movieCount,
+    required this.limit,
+    required this.pageNumber,
+    required this.movies,
+  });
+
+  factory YtsData.fromJson(Map<String, dynamic> json) {
+    return YtsData(
+      movieCount: json['movie_count'] as int? ?? 0,
+      limit: json['limit'] as int? ?? 0,
+      pageNumber: json['page_number'] as int? ?? 0,
+      movies:
+          (json['movies'] as List? ?? [])
+              .map(
+                (movie) => Movie.fromJson(movie as Map<String, dynamic>? ?? {}),
+              )
+              .toList(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'movie_count': movieCount,
+      'limit': limit,
+      'page_number': pageNumber,
+      'movies': movies.map((movie) => movie.toJson()).toList(),
+    };
+  }
+}
+
 class Movie {
-  int id;
-  String url;
-  String imdbCode;
-  String title;
-  String titleEnglish;
-  String titleLong;
-  String slug;
-  int year;
-  double rating;
-  int runtime;
-  List<String> genres;
-  String summary;
-  String descriptionFull;
-  String synopsis;
-  String ytTrailerCode;
-  String language;
-  String mpaRating;
-  String backgroundImage;
-  String backgroundImageOriginal;
-  String smallCoverImage;
-  String mediumCoverImage;
-  String largeCoverImage;
-  String state;
-  List<YtsTorrent> torrents;
-  String dateUploaded;
-  int dateUploadedUnix;
+  final int id;
+  final String url;
+  final String imdbCode;
+  final String title;
+  final String titleEnglish;
+  final String titleLong;
+  final String slug;
+  final int year;
+  final double rating;
+  final int runtime;
+  final List<String> genres;
+  final String summary;
+  final String descriptionFull;
+  final String synopsis;
+  final String ytTrailerCode;
+  final String language;
+  final String mpaRating;
+  final String backgroundImage;
+  final String backgroundImageOriginal;
+  final String smallCoverImage;
+  final String mediumCoverImage;
+  final String largeCoverImage;
+  final String state;
+  final List<Torrent> torrents;
+  final String dateUploaded;
+  final int dateUploadedUnix;
 
   Movie({
     required this.id,
@@ -57,35 +126,39 @@ class Movie {
 
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
-      id: json['id'],
-      url: json['url'],
-      imdbCode: json['imdb_code'],
-      title: json['title'],
-      titleEnglish: json['title_english'],
-      titleLong: json['title_long'],
-      slug: json['slug'],
-      year: json['year'],
-      rating: (json['rating'] as num).toDouble(),
-      runtime: json['runtime'],
-      genres: List<String>.from(json['genres']),
-      summary: json['summary'],
-      descriptionFull: json['description_full'],
-      synopsis: json['synopsis'],
-      ytTrailerCode: json['yt_trailer_code'],
-      language: json['language'],
-      mpaRating: json['mpa_rating'],
-      backgroundImage: json['background_image'],
-      backgroundImageOriginal: json['background_image_original'],
-      smallCoverImage: json['small_cover_image'],
-      mediumCoverImage: json['medium_cover_image'],
-      largeCoverImage: json['large_cover_image'],
-      state: json['state'],
+      id: json['id'] as int? ?? 0,
+      url: json['url'] as String? ?? '',
+      imdbCode: json['imdb_code'] as String? ?? '',
+      title: json['title'] as String? ?? '',
+      titleEnglish: json['title_english'] as String? ?? '',
+      titleLong: json['title_long'] as String? ?? '',
+      slug: json['slug'] as String? ?? '',
+      year: json['year'] as int? ?? 0,
+      rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
+      runtime: json['runtime'] as int? ?? 0,
+      genres: (json['genres'] as List? ?? []).cast<String>(),
+      summary: json['summary'] as String? ?? '',
+      descriptionFull: json['description_full'] as String? ?? '',
+      synopsis: json['synopsis'] as String? ?? '',
+      ytTrailerCode: json['yt_trailer_code'] as String? ?? '',
+      language: json['language'] as String? ?? '',
+      mpaRating: json['mpa_rating'] as String? ?? '',
+      backgroundImage: json['background_image'] as String? ?? '',
+      backgroundImageOriginal:
+          json['background_image_original'] as String? ?? '',
+      smallCoverImage: json['small_cover_image'] as String? ?? '',
+      mediumCoverImage: json['medium_cover_image'] as String? ?? '',
+      largeCoverImage: json['large_cover_image'] as String? ?? '',
+      state: json['state'] as String? ?? '',
       torrents:
-          (json['torrents'] as List)
-              .map((torrent) => YtsTorrent.fromJson(torrent))
+          (json['torrents'] as List? ?? [])
+              .map(
+                (torrent) =>
+                    Torrent.fromJson(torrent as Map<String, dynamic>? ?? {}),
+              )
               .toList(),
-      dateUploaded: json['date_uploaded'],
-      dateUploadedUnix: json['date_uploaded_unix'],
+      dateUploaded: json['date_uploaded'] as String? ?? '',
+      dateUploadedUnix: json['date_uploaded_unix'] as int? ?? 0,
     );
   }
 
@@ -121,23 +194,23 @@ class Movie {
   }
 }
 
-class YtsTorrent {
-  String url;
-  String hash;
-  String quality;
-  String type;
-  String isRepack;
-  String videoCodec;
-  String bitDepth;
-  String audioChannels;
-  int seeds;
-  int peers;
-  String size;
-  int sizeBytes;
-  String dateUploaded;
-  int dateUploadedUnix;
+class Torrent {
+  final String url;
+  final String hash;
+  final String quality;
+  final String type;
+  final String isRepack;
+  final String videoCodec;
+  final String bitDepth;
+  final String audioChannels;
+  final int seeds;
+  final int peers;
+  final String size;
+  final int sizeBytes;
+  final String dateUploaded;
+  final int dateUploadedUnix;
 
-  YtsTorrent({
+  Torrent({
     required this.url,
     required this.hash,
     required this.quality,
@@ -154,22 +227,22 @@ class YtsTorrent {
     required this.dateUploadedUnix,
   });
 
-  factory YtsTorrent.fromJson(Map<String, dynamic> json) {
-    return YtsTorrent(
-      url: json['url'],
-      hash: json['hash'],
-      quality: json['quality'],
-      type: json['type'],
-      isRepack: json['is_repack'],
-      videoCodec: json['video_codec'],
-      bitDepth: json['bit_depth'],
-      audioChannels: json['audio_channels'],
-      seeds: json['seeds'],
-      peers: json['peers'],
-      size: json['size'],
-      sizeBytes: json['size_bytes'],
-      dateUploaded: json['date_uploaded'],
-      dateUploadedUnix: json['date_uploaded_unix'],
+  factory Torrent.fromJson(Map<String, dynamic> json) {
+    return Torrent(
+      url: json['url'] as String? ?? '',
+      hash: json['hash'] as String? ?? '',
+      quality: json['quality'] as String? ?? '',
+      type: json['type'] as String? ?? '',
+      isRepack: json['is_repack'] as String? ?? '',
+      videoCodec: json['video_codec'] as String? ?? '',
+      bitDepth: json['bit_depth'] as String? ?? '',
+      audioChannels: json['audio_channels'] as String? ?? '',
+      seeds: json['seeds'] as int? ?? 0,
+      peers: json['peers'] as int? ?? 0,
+      size: json['size'] as String? ?? '',
+      sizeBytes: json['size_bytes'] as int? ?? 0,
+      dateUploaded: json['date_uploaded'] as String? ?? '',
+      dateUploadedUnix: json['date_uploaded_unix'] as int? ?? 0,
     );
   }
 
@@ -189,6 +262,38 @@ class YtsTorrent {
       'size_bytes': sizeBytes,
       'date_uploaded': dateUploaded,
       'date_uploaded_unix': dateUploadedUnix,
+    };
+  }
+}
+
+class YtsMeta {
+  final int serverTime;
+  final String serverTimezone;
+  final int apiVersion;
+  final String executionTime;
+
+  YtsMeta({
+    required this.serverTime,
+    required this.serverTimezone,
+    required this.apiVersion,
+    required this.executionTime,
+  });
+
+  factory YtsMeta.fromJson(Map<String, dynamic> json) {
+    return YtsMeta(
+      serverTime: json['server_time'] as int? ?? 0,
+      serverTimezone: json['server_timezone'] as String? ?? '',
+      apiVersion: json['api_version'] as int? ?? 0,
+      executionTime: json['execution_time'] as String? ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'server_time': serverTime,
+      'server_timezone': serverTimezone,
+      'api_version': apiVersion,
+      'execution_time': executionTime,
     };
   }
 }

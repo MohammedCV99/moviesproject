@@ -8,7 +8,7 @@ class AppNetworkBody {
     String email,
     String password,
     String confirmPassword,
-    String Phone,
+    String phone,
     int avaterId,
   ) {
     return {
@@ -16,7 +16,7 @@ class AppNetworkBody {
       "email": email,
       "password": password,
       "confirmPassword": confirmPassword,
-      "Phone": Phone,
+      "phone": phone,
       "avaterId": avaterId,
     };
   }

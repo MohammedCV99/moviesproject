@@ -15,11 +15,6 @@ class Onboardingdata {
 
 List<Onboardingdata> OnBoardinginformations = [
   Onboardingdata(
-    URLImage: Appimages.MoviesPoster1,
-    Title: Appconsts.OnBoarding1Title,
-    Subtitle: Appconsts.OnBoarding1SubTitle,
-  ),
-  Onboardingdata(
     URLImage: Appimages.MoviesPoster2,
     Title: Appconsts.OnBoarding2Title,
     Subtitle: Appconsts.OnBoarding2SubTitle,

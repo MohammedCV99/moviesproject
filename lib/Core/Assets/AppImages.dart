@@ -21,4 +21,6 @@ class Appimages {
   static String PlayLogo = "Assets/images/PlayLogo.png";
   static String Search = "Assets/images/Search.png";
   static String WatchNow = "Assets/images/WatchNow.png";
+  static String enLogo = "Assets/images/enLogo.png";
+  static String arLogo = "Assets/images/arLogo.png";
 }
